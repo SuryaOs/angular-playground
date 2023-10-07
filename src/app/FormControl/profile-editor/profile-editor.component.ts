@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { CustomValidator } from 'src/app/CustomValidator/custom-validator';
 
 @Component({
@@ -24,16 +24,39 @@ export class ProfileEditorComponent {
   profileForm = this.fb.group({
     firstName: [''],
     lastName: [''],
-    address: this.fb.group({
-      street: [''],
-      city: [''],
-      state: [''],
-      zip: [''],
-    }),
+    addresses: this.fb.array([]),
+    // address: this.fb.group({
+    //   street: [''],
+    //   city: [''],
+    //   state: [''],
+    //   zip: [''],
+    // }),
     totalQuantity: [10, [Validators.required, CustomValidator.maxNumberCustom(20) ]]
   });
 
   constructor(private fb: FormBuilder) {}
+
+  // getter for address form array
+  get addresses() {
+    return this.profileForm.controls["addresses"] as FormArray;
+  }
+
+  // to add address form dynamically
+  addAddress() {
+      const addressForm = this.fb.group({
+        street: [''],
+        city: [''],
+        state: [''],
+        zip: [''],
+      });
+
+      this.addresses.push(addressForm);
+  }
+
+  // remove addressForm based on index
+  deleteAddress(addressIndex: any) {
+    this.addresses.removeAt(addressIndex);
+  }
 
   onSubmit() {
     console.warn(this.profileForm.value);

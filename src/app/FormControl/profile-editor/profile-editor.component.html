@@ -5,7 +5,9 @@
   <label for="last-name">Last Name: </label>
   <input id="last-name" type="text" formControlName="lastName" />
 
-  <div formGroupName="address">
+  <br>
+
+  <!-- <div formGroupName="address">
     <h2>Address</h2>
 
     <label for="street">Street: </label>
@@ -19,8 +21,29 @@
 
     <label for="zip">Zip Code: </label>
     <input id="zip" type="text" formControlName="zip" />
-  </div>
+  </div> -->
 
+  <ng-container formArrayName="addresses">
+    <ng-container *ngFor="let addressForm of addresses.controls; let i = index">
+      <div [formGroupName]="i">
+        <label for="street">Street: </label>
+        <input id="street" type="text" formControlName="street" />
+
+        <label for="city">City: </label>
+        <input id="city" type="text" formControlName="city" />
+
+        <label for="state">State: </label>
+        <input id="state" type="text" formControlName="state" />
+
+        <label for="zip">Zip Code: </label>
+        <input id="zip" type="text" formControlName="zip" />
+
+        <button (click)="deleteAddress(i)">Delete</button>
+      </div>
+      </ng-container>
+  </ng-container>
+
+  <button (click)="addAddress()">add</button>
   <!-- Custom Form Control Start -->
   <app-choose-quantity [increment]="1" formControlName="totalQuantity"></app-choose-quantity>
   <!-- Custom Form Control End -->
