@@ -1,5 +1,12 @@
 import { Component, Input } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  AbstractControl,
+  ControlValueAccessor,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  ValidationErrors,
+  Validator,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-choose-quantity',
@@ -13,9 +20,16 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       multi: true,
       useExisting: ChooseQuantityComponent,
     },
+    // adding custom validator rule to list of known validators
+    {
+      provide: NG_VALIDATORS,
+      multi: true,
+      useExisting: ChooseQuantityComponent
+    }
   ],
 })
-export class ChooseQuantityComponent implements ControlValueAccessor {
+export class ChooseQuantityComponent implements ControlValueAccessor, Validator
+{
   value = 0;
 
   @Input() increment!: number;
@@ -40,6 +54,13 @@ export class ChooseQuantityComponent implements ControlValueAccessor {
     this.markAsTouched();
     this.value -= this.increment;
     this.onChange(this.value);
+  }
+
+  markAsTouched() {
+    if (!this.touched) {
+      this.onTouched();
+      this.touched = true;
+    }
   }
 
   // Interface Methods Start //
@@ -70,10 +91,24 @@ export class ChooseQuantityComponent implements ControlValueAccessor {
 
   // Interface Methods End //
 
-  markAsTouched() {
-    if (!this.touched) {
-      this.onTouched();
-      this.touched = true;
+  // Validator Interface Method Starts //
+
+  // this method will be called whenever a new value is reported to parent form.
+  validate(control: AbstractControl<any, any>): ValidationErrors | null {
+    const quantity = control.value;
+    if (quantity <= 0) {
+      return {
+        mustBePositive: {
+          quantity,
+        },
+      };
     }
+    return null;
   }
+
+  // Optional Method
+  // it will register callback function that allows us to trigger validation for custom control on demand.
+  // registerOnValidatorChange?(fn: () => void): void {
+  //   throw new Error('Method not implemented.');
+  // }
 }

@@ -29,7 +29,7 @@ export class ProfileEditorComponent {
       state: [''],
       zip: [''],
     }),
-    totalQuantity: [10, [Validators.required, Validators.max(100)]]
+    totalQuantity: [10, [Validators.required, Validators.max(20)]]
   });
 
   constructor(private fb: FormBuilder) {}
