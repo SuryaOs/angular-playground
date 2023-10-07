@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { maxNumberCustom } from 'src/app/CustomValidator/custom-validator';
 
 @Component({
   selector: 'app-profile-editor',
@@ -29,7 +30,7 @@ export class ProfileEditorComponent {
       state: [''],
       zip: [''],
     }),
-    totalQuantity: [10, [Validators.required, Validators.max(20)]]
+    totalQuantity: [10, [Validators.required, maxNumberCustom(15) ]]
   });
 
   constructor(private fb: FormBuilder) {}
