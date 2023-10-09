@@ -1,5 +1,3 @@
-# AngularPlayground
-
 # Concepts Practiced
 1) Reactive Form with FormGroup and FormControl
 2) Reactive Form with FormBuilder
