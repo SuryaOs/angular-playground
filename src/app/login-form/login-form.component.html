@@ -1,0 +1,7 @@
+<div [formGroup]="loginForm">
+  <label for="user-name">User Name</label>
+  <input id="username-input" type="text" formControlName="userName" />
+  <label for="password">Password</label>
+  <input id="password-input" type="password" formControlName="password" />
+  <button id="login-button" (click)="onFormSubmit(loginForm)" [disabled]="loginForm.invalid">Login</button>
+</div>
